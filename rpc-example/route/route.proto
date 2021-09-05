@@ -1,0 +1,57 @@
+//Define the message(data) and services
+
+//what syntax to use for the proto
+syntax = "proto3";
+
+//define the package
+option go_package = "rpc-example/route";
+
+
+package route;
+
+//define Data struct
+message Point{
+  int32 latitude = 1;
+  int32 longitude = 2;
+}
+message Rectangle{
+  Point lo = 1;
+  Point hi = 2;
+}
+message Feature{
+  string name = 1;
+  Point location = 2;
+}
+
+message RouteSummary{
+  int32 pointCount = 1;
+  int32 distance = 2;
+  int32 totalTime = 3;
+}
+
+//use which mode
+enum RecommendationMode{
+  GetFarthest = 0;
+  GetNearest = 1;
+}
+
+message RecommendationRequest{
+    RecommendationMode mode = 1;
+    Point point = 2;
+}
+
+//define Service
+service RouteGuide{
+  //unary => send a request and response a request
+  rpc GetFeature(Point) returns (Feature){};
+
+  //streaming
+  //server,keep streaming Feature from request points
+  rpc GetListOfFeature(Rectangle) returns(stream Feature){};
+
+  //client,keep sending point and return a summary
+  rpc GetRecordRoute(stream Point) returns (RouteSummary){}
+
+  //2 side streaming
+  rpc Recommend(stream RecommendationRequest) returns (stream Feature){}
+}
