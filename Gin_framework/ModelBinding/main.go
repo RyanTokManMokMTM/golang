@@ -39,6 +39,24 @@ type userLogin struct {
 	Password string `form:"password" json:"password" xml:"password" binding:"required"`
 }
 
+type User struct {
+	Name string `form:"name"`
+	Address string `form:"addr"`
+	School string `form:"school"`
+}
+
+type Character struct {
+	ID string `uri:"id" binding:"required"`
+	Name string `uri:"name" binding:"required"`
+}
+
+//access the header data
+type HeaderData struct {
+	Domain string `header:"domain"`
+	CookiesData bool `header:"cookie"`
+
+}
+
 func main(){
 	//try bind with json xml and from
 	server := gin.Default()
@@ -52,6 +70,11 @@ func main(){
 		user.POST("/xml",bindXMLHandle)
 		user.POST("/form",bindFormHandle)
 	}
+
+	server.Any("/testing",bindUriQueryHandle)
+	server.GET("bindUri/:id/:name",bindWithUriHandle)
+	server.GET("/customHeader",bindWithHeaderHandle)
+
 	server.Run(":8080")
 }
 
@@ -131,4 +154,57 @@ func bindFormHandle(c *gin.Context){
 	fmt.Println(form)
 
 	c.String(http.StatusOK,"welcome!")
+}
+
+//not working with body etc... just working with uri query string
+//?xxx=xxx&yyy=yyy...
+func bindUriQueryHandle(c *gin.Context){
+	//Only bind the query string that passing in uri
+	var user User
+	if err := c.ShouldBindQuery(&user);err != nil{
+		c.JSON(http.StatusBadRequest,err)
+		return
+	}
+	fmt.Println(user)
+	c.String(http.StatusOK,"success")
+}
+
+//Bind model with define params in uri
+//behind the scene -> range the c.Params to get our param
+func bindWithUriHandle(c *gin.Context){
+	fmt.Println(c.Param("id"))
+	var character Character
+	if err := c.ShouldBindUri(&character);err != nil{
+		c.String(http.StatusBadRequest,err.Error())
+		return
+	}
+
+	fmt.Println(character)
+	c.JSON(http.StatusOK,gin.H{
+		"message":"succeed",
+		"uuid":character.ID,
+		"name":character.Name,
+	})
+}
+
+//bind with some header data that client has set to header
+/* example
+{
+    "Domain": "game",
+    "hasCookie": true,
+    "message": "accessed"
+}
+ */
+func bindWithHeaderHandle(c *gin.Context){
+	var headerData HeaderData
+	if err := c.ShouldBindHeader(&headerData);err != nil{
+		c.String(http.StatusBadRequest,err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"message":"accessed",
+		"Domain":headerData.Domain,
+		"hasCookie":headerData.CookiesData,
+	})
 }

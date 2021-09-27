@@ -14,18 +14,18 @@ type Handler interface {
 }
 */
 
-type GoodBye struct {
+type Hello struct {
 	//here define a logger for this hello to use
 	logger *log.Logger
 }
 
-func NewGoodByteHandler(log * log.Logger) *GoodBye{
-	return &GoodBye{
+func NewHelloHandler(log * log.Logger) *Hello{
+	return &Hello{
 		logger: log,
 	}
 }
 
-func (server *GoodBye) ServeHTTP(rw http.ResponseWriter, r *http.Request){
-	log.Println("GoodByte Custom Handler")
-	fmt.Fprintln(rw,"GoodBye")
+func (ser *Hello) ServeHTTP(rw http.ResponseWriter, r *http.Request){
+	log.Println("Hello Custom Handler")
+	fmt.Fprintln(rw,"Hello")
 }
