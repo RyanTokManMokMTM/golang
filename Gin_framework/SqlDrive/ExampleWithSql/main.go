@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql" //just call init function that declared in this package
@@ -212,6 +213,8 @@ func main(){
 	if err != nil{
 		panic(err)
 	}
+
+	newConn,err := conn.Conn(context.Background())
 
 	log.Println("db connected!")
 
