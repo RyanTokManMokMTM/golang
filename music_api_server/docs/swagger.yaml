@@ -1,0 +1,82 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact:
+    email: RyanTokManMokMTM@hotmaiol.com
+    name: jackson.tmm
+    url: https://github.com/RyanTokManMokMTM
+  description: IOS Music Web Service
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: music api server
+  version: "1.0"
+paths:
+  /user/auth/login:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded;charset=utf-8
+      parameters:
+      - description: email
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: password
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: UserLogin
+      tags:
+      - User Auth
+  /user/auth/signup:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded;charset=utf-8
+      parameters:
+      - description: email
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: password
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: confirmPassword
+        in: formData
+        name: confirmPassword
+        required: true
+        type: string
+      - description: FirstName
+        in: formData
+        name: firstName
+        required: true
+        type: string
+      - description: LastName
+        in: formData
+        name: lastName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: APIRESPONSE
+      summary: UserSignUp
+      tags:
+      - User Auth
+schemes:
+- http
+swagger: "2.0"

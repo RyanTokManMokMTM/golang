@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package simple;
+
+//change the compiler behaviour
+option go_package = "./simplepb"; //this pb relative to which go package
+
+message SimpleMessage{
+  int32 id = 1;
+  bool is_simple = 2;
+  string name = 3;
+  repeated int32 simple_list = 4;
+}

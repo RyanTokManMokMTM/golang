@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package dateTime;
+
+option go_package = "./DataTimepb";
+
+message DateTime{
+  int32 id = 1;
+  WeekDay day = 2;
+}
+
+enum WeekDay{
+  UNDEFINED = 0;
+  DAY_ONE_MONDAY = 1;
+  DAY_ONE_TUESDAY = 2;
+  DAY_ONE_WEDNESDAY = 3;
+  DAY_ONE_THURSDAY = 4;
+  DAY_ONE_FRIDAY = 5;
+  DAY_ONE_SATURDAY = 6;
+  DAY_ONE_SUNDAY = 7;
+}

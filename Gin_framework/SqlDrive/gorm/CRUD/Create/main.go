@@ -161,3 +161,5 @@ func createWithMapBatchData(db *gorm.DB){
 
 	log.Println("map batches insert succeed")
 }
+
+// With a Line Condition

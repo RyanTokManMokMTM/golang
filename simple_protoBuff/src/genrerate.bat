@@ -1,0 +1,1 @@
+protoc -I src/ --go_out=scr/ src/simple/simple.proto
